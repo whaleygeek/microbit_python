@@ -88,8 +88,6 @@ def move(player, col):
     
 def get_depth(col): #TODO
     """Work out how far to drop a piece down this column until it stops"""
-    return 3 # TODO
-    
     # scans down the column finding the first full piece for any player
     # returns 0 if the column is full
     # returns 1 if there is 1 space left, 2, 3.
