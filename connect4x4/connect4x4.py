@@ -4,14 +4,6 @@
 
 from microbit import *
 
-# a board for each player
-# 16 bit binary encoded raster for player 1[0] and player 2[1]
-
-boards = None
-def clear_board():
-    global boards
-    boards = [0x0000, 0x0000]
-
 # winning masks for win signatures, 10 in all for a 4x4 board
 # can be applied to any player board
 # col,depth        bits left to right MSB to LSB
@@ -45,6 +37,14 @@ win = [
 # 12,09,06,03 = 0001 0010 0100 1000
 0x1248
 ]
+
+# a board for each player
+# 16 bit binary encoded raster for player 1[0] and player 2[1]
+
+boards = None
+def clear_board():
+    global boards
+    boards = [0x0000, 0x0000]
 
 def splash_screen():
     """Show a splash screen until any button is pressed"""
@@ -90,7 +90,7 @@ def move(player, col):
     display.set_pixel(col, 0, 0)
     return col
     
-def get_depth(col): #TODO
+def get_depth(col):
     """Work out how far to drop a piece down this column until it stops"""
     # scans down the column finding the first full piece for any player
     # returns 0 if the column is full
@@ -142,27 +142,41 @@ def set(player, col, depth):
         brightness = 1
     display.set_pixel(col, depth+1, brightness)
    
-def get_winner(): #TODO
+def get_winner():
     """Work out if there is a winner"""
-    #for p in range(2):
-    #    for sig in win:
-    #        if p & sig == sig:
-    #            return p+1 # This player 1 or 2 is a winner
+    for pi in range(2):
+        p = boards[pi]
+        for sig in win:
+            if p & sig == sig:
+                return pi+1 # This player 1 or 2 is a winner
 
     # no winner
     # are all positions occupied?
-    #occupancy = boards[0] | boards[1]
-    #if occupancy == 0xFFFF:
-    #    return -1 # stalemate
+    occupancy = boards[0] | boards[1]
+    if occupancy == 0xFFFF:
+        return -1 # stalemate
         
     return 0 # no player is a winner
     
-def winner(player): #TODO
+def winner(player):
     """Show winner or stalemate animation"""
-    pass
     # show a flashing player number then solid at end
     # note player 0 means stale mate
     # at end, wait for any button press to exit
+
+    if player == 0:
+        ch = "X" # stale mate
+    else:
+        ch = str(player)
+        
+    for i in range(4):
+        display.show(ch)
+        sleep(500)
+        display.clear()
+        sleep(500)
+    display.show(ch)
+    sleep(2000)
+        
    
 def run(): 
     # run forever
