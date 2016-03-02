@@ -48,9 +48,13 @@ win = [
 
 def splash_screen():
     """Show a splash screen until any button is pressed"""
-    while not (button_a.is_pressed() or button_b.is_pressed()):
+    while True:
         display.show("C4", 500)
+        if button_a.was_pressed() or button_b.was_pressed():
+            break
     display.clear()
+    button_a.reset_presses()
+    button_b.reset_presses()
     
 def move(player, col):
     """Move a piece along the top for this player"""
