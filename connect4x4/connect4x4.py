@@ -7,10 +7,10 @@ from microbit import *
 # winning masks for win signatures, 10 in all for a 4x4 board
 # can be applied to any player board
 # col,depth        bits left to right MSB to LSB
-# 00 01 02 03      15 14 13 12
-# 10 11 12 13      11 10 09 08
-# 20 21 22 23      07 06 05 04
-# 30 31 32 33      03 02 01 00
+# 00 10 20 30      15 14 13 12
+# 01 11 21 31      11 10 09 08
+# 02 12 22 32      07 06 05 04
+# 03 13 23 33      03 02 01 00
 
 win = [
 #horizontal wins (4)
@@ -46,6 +46,12 @@ def clear_board():
     global boards
     boards = [0x0000, 0x0000]
 
+def get_brightness(player):
+    if player == 1:
+        return 9
+    else:
+        return 1
+        
 def splash_screen():
     """Show a splash screen until any button is pressed"""
     while True:
@@ -68,10 +74,7 @@ def move(player, col):
 
     button_a.reset_presses()
     button_b.reset_presses()
-    if player == 1: # DRY
-        brightness = 9
-    else:
-        brightness = 1
+    brightness = get_brightness(player)
     display.set_pixel(col, 0, brightness)
         
     while accelerometer.get_y() < 800:
@@ -113,10 +116,7 @@ def get_depth(col):
     
 def drop(player, col, depth):
     """Animate dropping a piece down this column until it reaches depth"""
-    if player == 1: # DRY
-        brightness = 9
-    else:
-        brightness = 1
+    brightness = get_brightness(player)
 
     # animates dropping a piece for a player
     #   draw the player dot in the correct intensity
@@ -136,10 +136,7 @@ def set(player, col, depth):
     #   row is bit number in nibble (how many shifts)
     mask = 0x8000 >> ((depth*4) + col)
     boards[player-1] |= mask
-    if player == 1: # DRY
-        brightness = 9
-    else:
-        brightness = 1
+    brightness = get_brightness(player)
     display.set_pixel(col, depth+1, brightness)
    
 def get_winner():
@@ -156,7 +153,7 @@ def get_winner():
     if occupancy == 0xFFFF:
         return -1 # stalemate
         
-    return 0 # no player is a winner
+    return 0 # no player is a winner yet
     
 def winner(player):
     """Show winner or stalemate animation"""
@@ -164,7 +161,7 @@ def winner(player):
     # note player 0 means stale mate
     # at end, wait for any button press to exit
 
-    if player == 0:
+    if player == -1:
         ch = "X" # stale mate
     else:
         ch = str(player)
@@ -177,7 +174,6 @@ def winner(player):
     display.show(ch)
     sleep(2000)
         
-   
 def run(): 
     # run forever
     while True:
@@ -214,6 +210,8 @@ def run():
                 # winner or stalemate
                 winner(win) 
                 game_over = True
-                
+ 
+run()
+
 # END
 
