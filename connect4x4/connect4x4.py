@@ -181,8 +181,8 @@ def run():
                     break
 
             # action the move
-            drop(player, col, depth)
-            set(player, col, depth)
+            drop(player, col, depth-1)
+            set(player, col, depth-1)
             
             # work out if the game is over
             win = get_winner()
