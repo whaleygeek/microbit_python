@@ -6,7 +6,11 @@ from microbit import *
 
 # a board for each player
 # 16 bit binary encoded raster for player 1[0] and player 2[1]
-boards = [0x0000, 0x0000]
+
+boards = None
+def clear_board():
+    global boards
+    boards = [0x0000, 0x0000]
 
 # winning masks for win signatures, 10 in all for a 4x4 board
 # can be applied to any player board
@@ -44,7 +48,9 @@ win = [
 
 def splash_screen():
     """Show a splash screen until any button is pressed"""
-    pass
+    while not (button_a.is_pressed() or button_b.is_pressed()):
+        display.show("C4", 500)
+    display.clear()
     
 def move(player, col):
     """Move a piece along the top for this player"""
@@ -64,7 +70,7 @@ def move(player, col):
         brightness = 1
     display.set_pixel(col, 0, brightness)
         
-    while not (button_a.is_pressed() and button_b.is_pressed()):
+    while accelerometer.get_y() < 800:
         if button_a.was_pressed():
             if col > 0:
                 display.set_pixel(col, 0, 0)
@@ -123,16 +129,16 @@ def set(player, col, depth):
    
 def get_winner():
     """Work out if there is a winner"""
-    for p in range(2):
-        for sig in win:
-            if p & sig == sig:
-                return p+1 # This player 1 or 2 is a winner
+    #for p in range(2):
+    #    for sig in win:
+    #        if p & sig == sig:
+    #            return p+1 # This player 1 or 2 is a winner
 
     # no winner
     # are all positions occupied?
-    occupancy = boards[0] | boards[1]
-    if occupancy == 0xFFFF:
-        return -1 # stalemate
+    #occupancy = boards[0] | boards[1]
+    #if occupancy == 0xFFFF:
+    #    return -1 # stalemate
         
     return 0 # no player is a winner
     
