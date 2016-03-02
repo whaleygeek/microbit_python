@@ -64,7 +64,7 @@ def move(player, col):
 
     button_a.reset_presses()
     button_b.reset_presses()
-    if player == 1:
+    if player == 1: # DRY
         brightness = 9
     else:
         brightness = 1
@@ -86,7 +86,7 @@ def move(player, col):
     display.set_pixel(col, 0, 0)
     return col
     
-def get_depth(col):
+def get_depth(col): #TODO
     """Work out how far to drop a piece down this column until it stops"""
     return 3 # TODO
     
@@ -105,7 +105,7 @@ def get_depth(col):
     
 def drop(player, col, depth):
     """Animate dropping a piece down this column until it reaches depth"""
-    if player == 1:
+    if player == 1: # DRY
         brightness = 9
     else:
         brightness = 1
@@ -121,13 +121,20 @@ def drop(player, col, depth):
     display.set_pixel(col, i+1, brightness)
     
     
-def set(player, col, depth):
+def set(player, col, depth): #TODO
     """Remember a player token at this column and row"""
     # must set appropriate bit in board for that player at end
     #   col is index into nibble (how many shifts of 4bits)
     #   row is bit number in nibble (how many shifts)
+    mask = 0x8000 >> ((depth*4) + col)
+    boards[player-1] |= mask
+    if player == 1: # DRY
+        brightness = 9
+    else:
+        brightness = 1
+    display.set_pixel(col, depth+1, brightness)
    
-def get_winner():
+def get_winner(): #TODO
     """Work out if there is a winner"""
     #for p in range(2):
     #    for sig in win:
@@ -142,7 +149,7 @@ def get_winner():
         
     return 0 # no player is a winner
     
-def winner(player):
+def winner(player): #TODO
     """Show winner or stalemate animation"""
     pass
     # show a flashing player number then solid at end
