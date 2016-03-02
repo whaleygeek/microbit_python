@@ -93,15 +93,21 @@ def get_depth(col): #TODO
     # scans down the column finding the first full piece for any player
     # returns 0 if the column is full
     # returns 1 if there is 1 space left, 2, 3.
-    # OR together both boards to get occupancy signature
-    #occupancy = boards[0] | boards[1]
+
+    # 'or' together both boards to get occupancy signature
+    occupancy = boards[0] | boards[1]
+
     # highest 3-(set bit number in nibble) (3210) is depth of that col
-    # i.e. could count how many right shifts of number until it is zero
-    # or could pre-compute a depth table for each column and just compare?
-    # col0 0x8888
-    # col1 0x4444
-    # col2 0x2222
-    # col3 0x1111
+    # build a mask for the col by shifting a 1 into the nibble position of top row
+    mask = 0x8000 >> col
+    
+    # count how many rotate by 4's (max 4) before the mask finds a non zero
+    for i in range(4): # 0 to 3
+        if occupancy & mask != 0:
+            return i # found a set bit at this depth
+        mask >>= 4 # move to next row
+        
+    return 4 # the column is empty
     
 def drop(player, col, depth):
     """Animate dropping a piece down this column until it reaches depth"""
@@ -121,7 +127,7 @@ def drop(player, col, depth):
     display.set_pixel(col, i+1, brightness)
     
     
-def set(player, col, depth): #TODO
+def set(player, col, depth):
     """Remember a player token at this column and row"""
     # must set appropriate bit in board for that player at end
     #   col is index into nibble (how many shifts of 4bits)
