@@ -48,7 +48,6 @@ def splash_screen():
     
 def move(player, col):
     """Move a piece along the top for this player"""
-    pass
     # starts off at col
     # button A moves left, until leftmost position
     # button B moves right, until rightmost position
@@ -56,6 +55,30 @@ def move(player, col):
     # draws a dot at top row
     # intensity is bright for player 1, dim for player 2
     # returns column selected (0..3)
+
+    button_a.reset_presses()
+    button_b.reset_presses()
+    if player == 1:
+        brightness = 9
+    else:
+        brightness = 1
+    display.set_pixel(col, 0, brightness)
+        
+    while not (button_a.is_pressed() and button_b.is_pressed()):
+        if button_a.was_pressed():
+            if col > 0:
+                display.set_pixel(col, 0, 0)
+                col -= 1
+                display.set_pixel(col, 0, brightness)
+                
+        elif button_b.was_pressed():
+            if col < 3:
+                display.set_pixel(col, 0, 0)
+                col += 1
+                display.set_pixel(col, 0, brightness)
+                
+    display.set_pixel(col, 0, 0)
+    return col
     
 def get_depth(col):
     """Work out how far to drop a piece down this column until it stops"""
@@ -96,8 +119,8 @@ def get_winner():
     # no winner
     # are all positions occupied?
     occupancy = boards[0] | boards[1]
-    if occupancy = 0xFFFF:
-        return -1: # stalemate
+    if occupancy == 0xFFFF:
+        return -1 # stalemate
         
     return 0 # no player is a winner
     
@@ -107,42 +130,43 @@ def winner(player):
     # show a flashing player number then solid at end
     # note player 0 means stale mate
     # at end, wait for any button press to exit
-    
-# run forever
-while True:
-    game_over = False
-    player = 1
-    clear_board()
-    
-    # show splash screen and wait for start
-    splash_screen()
-
-    # main game loop
-    while not game_over:
-        # get a valid move
-        col = 0
-        while True:
-            col = move(player, col)
-            depth = get_depth(col)
-            if depth > 0:
-                break
-
-        # action the move
-        drop(player, col, depth)
-        set(player, col, depth)
+   
+def run(): 
+    # run forever
+    while True:
+        game_over = False
+        player = 1
+        clear_board()
         
-        # work out if the game is over
-        win = get_winner()
-        if win == 0:
-            # swap to other player
-            if player == 1:
-                player = 2
+        # show splash screen and wait for start
+        splash_screen()
+
+        # main game loop
+        while not game_over:
+            # get a valid move
+            col = 0
+            while True:
+                col = move(player, col)
+                depth = get_depth(col)
+                if depth > 0:
+                    break
+
+            # action the move
+            drop(player, col, depth)
+            set(player, col, depth)
+            
+            # work out if the game is over
+            win = get_winner()
+            if win == 0:
+                # swap to other player
+                if player == 1:
+                    player = 2
+                else:
+                    player = 1
             else:
-                player = 1
-        else:
-            # winner or stalemate
-            winner(win) 
-            game_over = True
+                # winner or stalemate
+                winner(win) 
+                game_over = True
                 
 # END
 
