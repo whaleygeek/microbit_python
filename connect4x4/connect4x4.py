@@ -82,12 +82,13 @@ def move(player, col):
     
 def get_depth(col):
     """Work out how far to drop a piece down this column until it stops"""
-    pass
+    return 3 # TODO
+    
     # scans down the column finding the first full piece for any player
     # returns 0 if the column is full
     # returns 1 if there is 1 space left, 2, 3.
     # OR together both boards to get occupancy signature
-    occupancy = boards[0] | boards[1]
+    #occupancy = boards[0] | boards[1]
     # highest 3-(set bit number in nibble) (3210) is depth of that col
     # i.e. could count how many right shifts of number until it is zero
     # or could pre-compute a depth table for each column and just compare?
@@ -98,10 +99,21 @@ def get_depth(col):
     
 def drop(player, col, depth):
     """Animate dropping a piece down this column until it reaches depth"""
-    pass
+    if player == 1:
+        brightness = 9
+    else:
+        brightness = 1
+
     # animates dropping a piece for a player
     #   draw the player dot in the correct intensity
     #   animate from top down to depth (0 is top, 3 is bottom)
+        
+    for i in range(depth+1):
+        display.set_pixel(col, i+1, brightness)
+        sleep(750)
+        display.set_pixel(col, i+1, 0)
+    display.set_pixel(col, i+1, brightness)
+    
     
 def set(player, col, depth):
     """Remember a player token at this column and row"""
