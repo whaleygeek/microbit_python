@@ -158,7 +158,7 @@ def get_winner():
 def winner(player):
     """Show winner or stalemate animation"""
     # show a flashing player number then solid at end
-    # note player 0 means stale mate
+    # note player -1 means stale mate
     # at end, wait for any button press to exit
 
     if player == -1:
