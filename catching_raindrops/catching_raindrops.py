@@ -9,19 +9,33 @@ AUTO_EMPTY = False
 MOVEMENT = True
 SENSITIVITY = 400
 
-high_score = 0
+def show_splash_screen():
+    pass
+    
+def play_game():
+    pass
 
+def test_movement():
+    pass
+    
+def show_number(n):
+    pass
+       
 def run():
+    high_score = 0
+    
     while True:
-        cup_x = 2
-        # show splash screen
-        # if button A
-            # play game
-            # if new high score
-                # record new high score
-                # show high score
-        # else if button B
-            # test movement
+        show_splash_screen()
+        if button_a.was_pressed():
+            button_a.reset_presses()
+            score = play_game()
+            if score > high_score:
+                high_score = score
+                show_number(high_score)
+                
+        elif button_b.was_pressed():
+            button_b.reset_presses()
+            test_movement()
 
 # run()
 
