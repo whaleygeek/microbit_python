@@ -11,12 +11,14 @@ MAX_MISSES = 3
 AUTO_EMPTY = False
 SENSITIVITY = 400
 
+SPLASH = [Image('00000:00000:00000:09090:09990:'),Image('00000:09090:00000:09090:09990:')]
+
 def show_splash_screen():
     button_a.reset_presses()
     button_b.reset_presses()
     
     while not button_a.was_pressed() and not button_b.was_pressed():
-        ## show animation: blinking
+        display.show(SPLASH, delay=250)
 
     button_a.reset_presses()
     button_b.reset_presses()
@@ -35,12 +37,12 @@ def test_movement():
     
 def show_number(n):
     for i in range(4):
-        display.show(n)
+        display.show(str(n))
         sleep(500)
         display.clear()
         sleep(500)
         
-    display.show(n)
+    display.show(str(n))
        
 def play_game():
     score = 0
@@ -54,69 +56,78 @@ def play_game():
     while True:
         if state == "NEWDROP":
             ## create new drop at random position
-            state = "RAINING"
+            #state = "RAINING"
+            pass
             
         elif state == "RAINING":
             ## draw cup
             ## draw drop
             ## if cup full:
-                ## draw full cup
+            #    ## draw full cup
             ## if drop at cup
-                state = "ATCUP"
+            #    state = "ATCUP"
             ## else
-                ## move drop down
+            #    ## move drop down
             ## if cup inverted and cup full
-                state = "EMPTYING"
+            #    state = "EMPTYING"
+            pass
             
         elif state == "ATCUP":
             ## if drop at cup x
-                state = "CATCH"
+            #    state = "CATCH"
             ## else
-                state = "MISS"
+            #    state = "MISS"
+            pass
             
         elif state == "MISS":
             ## add one to misses
             ## show dropped animation
             ## if too many misses
-                state = "GAMEOVER"
+            #    state = "GAMEOVER"
             ## else
-                state = "NEWDROP"
+            #    state = "NEWDROP"
+            pass
             
         elif state == "CATCH":
             ## add one to drops in cup
             ## if cup is at capacity
-                ## add one to score
-                state = "FULL"
+            #    ## add one to score
+            #    state = "FULL"
             ## else if over capacity
-                state = "OVERFLOW"
+            #    state = "OVERFLOW"
             ## else
-                ## add one to score
-                state = "NEWDROP"
+            #    ## add one to score
+            #    state = "NEWDROP"
+            pass
             
         elif state == "FULL":
             ## show animation 
             ## if AUTO EMPTY
-                state = "EMPTYING"
+            #    state = "EMPTYING"
             ## else
-                state = "NEWDROP"
+            #    state = "NEWDROP"
+            pass
             
-        elif state == "EMPTYING"
+        elif state == "EMPTYING":
             ## if cup inverted
-                ## show animation:draining
+            #    ## show animation:draining
             ## else
-                ## show animation: other?
+            #    ## show animation: other?
             ## zero drops in cup
             ## if speed > 1
-                ## take one off of speed
-            state = "NEWDROP"
+            #    ## take one off of speed
+            #state = "NEWDROP"
+            pass
             
         elif state == "OVERFLOW":
             ## show animation: overflowing
-            state = "GAMEOVER"
+            #state = "GAMEOVER"
+            pass
             
         elif state == "GAMEOVER":
             ## show animation: float to heaven
-            break
+            #break
+            pass
             
     return score
         
