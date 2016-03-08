@@ -13,6 +13,12 @@ SENSITIVITY = 400
 
 SPLASH = [Image('00000:00000:00000:09090:09990:'),Image('00000:09090:00000:09090:09990:')]
 
+EMPTY = Image('00000:00000:00000:00000:00000:')
+CUP   = Image('00000:00000:00000:09090:09990:')
+
+CUP_CANVAS = [EMPTY, CUP, EMPTY]
+
+
 def show_splash_screen():
     button_a.reset_presses()
     button_b.reset_presses()

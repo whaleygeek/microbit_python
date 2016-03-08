@@ -50,7 +50,7 @@ def get_brightness(player):
     if player == 1:
         return 9
     else:
-        return 1
+        return 4
         
 def splash_screen():
     """Show a splash screen until any button is pressed"""
