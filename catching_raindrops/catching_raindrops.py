@@ -13,7 +13,8 @@ def get_cup_position():
     return math.clamp(0, 4, acc+2)
     
 def show_splash_screen():
-    pass # TODO show an animation until any button pressed
+    ## while not button pressed
+        ## show animation: blinking cup
     
 def play_game():
     score = 0
@@ -24,39 +25,71 @@ def play_game():
     cup_x = 2
     state = "NEWDROP"
     
-    ##start_game
     while True:
         if state == "NEWDROP":
+            ## create new drop at random position
             state = "RAINING"
             
         elif state == "RAINING":
-            state = "ATCUP"
-            state = "EMPTYING"
+            ## draw cup
+            ## draw drop
+            ## if cup full:
+                ## draw full cup
+            ## if drop at cup
+                state = "ATCUP"
+            ## else
+                ## move drop down
+            ## if cup inverted and cup full
+                state = "EMPTYING"
             
         elif state == "ATCUP":
-            state = "CATCH"
-            state = "MISS"
+            ## if drop at cup x
+                state = "CATCH"
+            ## else
+                state = "MISS"
             
         elif state == "MISS":
-            state = "GAMEOVER"
-            state = "NEWDROP"
+            ## add one to misses
+            ## show dropped animation
+            ## if too many misses
+                state = "GAMEOVER"
+            ## else
+                state = "NEWDROP"
             
         elif state == "CATCH":
-            state = "FULL"
-            state = "OVERFLOW"
-            state = "NEWDROP"
+            ## add one to drops in cup
+            ## if cup is at capacity
+                ## add one to score
+                state = "FULL"
+            ## else if over capacity
+                state = "OVERFLOW"
+            ## else
+                ## add one to score
+                state = "NEWDROP"
             
         elif state == "FULL":
-            state = "EMPTYING"
-            state = "NEWDROP"
+            ## show animation 
+            ## if AUTO EMPTY
+                state = "EMPTYING"
+            ## else
+                state = "NEWDROP"
             
         elif state == "EMPTYING"
+            ## if cup inverted
+                ## show animation:draining
+            ## else
+                ## show animation: other?
+            ## zero drops in cup
+            ## if speed > 1
+                ## take one off of speed
             state = "NEWDROP"
             
         elif state == "OVERFLOW":
+            ## show animation: overflowing
             state = "GAMEOVER"
             
         elif state == "GAMEOVER":
+            ## show animation: float to heaven
             break
             
     return score
@@ -71,7 +104,10 @@ def test_movement():
         sleep(200)
     
 def show_number(n):
-    pass # TODO flash digit 4 times then leave it solid
+    ## for 4 flashes
+        ## show number, delay
+        ## clear screen, delay
+    ## show number
        
 def run():
     high_score = 0
