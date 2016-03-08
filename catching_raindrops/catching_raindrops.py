@@ -23,34 +23,43 @@ def play_game():
     drop_y = 0
     cup_x = 2
     state = "NEWDROP"
+    
     ##start_game
     while True:
         if state == "NEWDROP":
-            pass
+            state = "RAINING"
             
         elif state == "RAINING":
-            pass
+            state = "ATCUP"
+            state = "EMPTYING"
             
         elif state == "ATCUP":
-            pass
+            state = "CATCH"
+            state = "MISS"
             
         elif state == "MISS":
-            pass
+            state = "GAMEOVER"
+            state = "NEWDROP"
             
         elif state == "CATCH":
-            pass
+            state = "FULL"
+            state = "OVERFLOW"
+            state = "NEWDROP"
             
         elif state == "FULL":
-            pass
+            state = "EMPTYING"
+            state = "NEWDROP"
             
         elif state == "EMPTYING"
-            pass
+            state = "NEWDROP"
             
         elif state == "OVERFLOW":
-            pass
+            state = "GAMEOVER"
             
         elif state == "GAMEOVER":
-            pass
+            break
+            
+    return score
         
 
 def test_movement():
