@@ -36,7 +36,7 @@ def test_movement():
     while not button_b.was_pressed():
         x = get_cup_position()
         display.clear()
-        display.set_pixel(x, 2)
+        display.set_pixel(x, 2, 9)
         sleep(200)
     button_b.reset_presses()
     
@@ -49,7 +49,7 @@ def show_number(n):
         
     display.show(str(n))
        
-def play_game():
+def play_game(): #TODO
     score = 0
     drops_in_cup = 0
     misses = 0
@@ -136,7 +136,7 @@ def play_game():
             
     return score
         
-def run():
+def run(): #TO TEST
     high_score = 0
     
     while True:
