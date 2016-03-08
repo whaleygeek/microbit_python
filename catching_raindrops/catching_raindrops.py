@@ -25,7 +25,12 @@ def show_splash_screen():
 
 def get_cup_position():
     acc = accelerometer.get_x()/SENSITIVITY
-    return math.clamp(0, 4, acc+2)
+    acc += 2
+    if acc > 4:
+        acc = 4
+    elif acc < 0:
+        acc = 0
+    return int(acc)
 
 def test_movement():
     while not button_b.was_pressed():
