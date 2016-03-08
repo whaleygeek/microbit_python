@@ -1,5 +1,8 @@
 # catching_raindrops.py  08/03/2016  D.J.Whale
 
+from microbit import *
+import math
+
 # game parameters
 
 CUP_CAPACITY = 5
@@ -8,14 +11,37 @@ MAX_MISSES = 3
 AUTO_EMPTY = False
 SENSITIVITY = 400
 
+def show_splash_screen():
+    button_a.reset_presses()
+    button_b.reset_presses()
+    
+    while not button_a.was_pressed() and not button_b.was_pressed():
+        ## show animation: blinking
+
+    button_a.reset_presses()
+    button_b.reset_presses()
+
 def get_cup_position():
     acc = accelerometer.get_x()/SENSITIVITY
     return math.clamp(0, 4, acc+2)
+
+def test_movement():
+    while not button_b.was_pressed():
+        x = get_cup_position()
+        display.clear()
+        display.set_pixel(x, 2)
+        sleep(200)
+    button_b.reset_presses()
     
-def show_splash_screen():
-    ## while not button pressed
-        ## show animation: blinking cup
-    
+def show_number(n):
+    for i in range(4):
+        display.show(n)
+        sleep(500)
+        display.clear()
+        sleep(500)
+        
+    display.show(n)
+       
 def play_game():
     score = 0
     drops_in_cup = 0
@@ -94,26 +120,12 @@ def play_game():
             
     return score
         
-
-def test_movement():
-    button_b.reset_presses()
-    while not button_b.was_pressed():
-        x = get_cup_position()
-        display.clear()
-        display.set_pixel(x, 2)
-        sleep(200)
-    
-def show_number(n):
-    ## for 4 flashes
-        ## show number, delay
-        ## clear screen, delay
-    ## show number
-       
 def run():
     high_score = 0
     
     while True:
         show_splash_screen()
+        
         if button_a.was_pressed():
             button_a.reset_presses()
             score = play_game()
