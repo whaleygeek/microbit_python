@@ -2,6 +2,7 @@
 
 from microbit import *
 import math
+import random
 
 # Game parameters
 CUP_CAPACITY = 5
@@ -100,72 +101,72 @@ def play_game(): #TODO
     while True:
         if state == "NEWDROP":
             ## create new drop at random position
-            #state = "RAINING"
-            pass
+            drop_x = random.randrange(5)
+            drop_y = 0
+            state = "RAINING"
             
         elif state == "RAINING":
-            ## draw cup CUP
-            ## draw drop plot
-            ## if cup full:
-            #    ## draw full cup CUP_FULL
-            ## if drop at cup
-            #    state = "ATCUP"
-            ## else
-            #    ## move drop down
-            ## if cup inverted and cup full
-            #    state = "EMPTYING"
-            pass
+            # show cup
+            cup_x = get_cup_position()
+            #TODO: ### Not sure how to do this bit in python (display from a bigger canvas)
+            if drops_in_cup == cup_capacity: # cup full
+                display.show(CUP_FULL)
+            # draw drop plot
+            display.set_pixel(drop_x, int(drop_y/speed), 9)
+            sleep(100)
+            if drop_y >= 4*speed:
+                state = "ATCUP"
+            else
+                # move drop down
+                drop_y += 1
+            #TODO ### have to sense cup_inverted from accelerometer? or use gesture.
+            if cup_inverted and drops_in_cup >= cup_capacity:
+                state = "EMPTYING"
             
         elif state == "ATCUP":
-            ## if drop at cup x
-            #    state = "CATCH"
-            ## else
-            #    state = "MISS"
-            pass
+            if drop_x == cup_x:
+                state = "CATCH"
+            else:
+                state = "MISS"
             
         elif state == "MISS":
-            ## add one to misses
-            ## show dropped animation DROPPED
-            ## if too many misses
-            #    state = "GAMEOVER"
-            ## else
-            #    state = "NEWDROP"
-            pass
+            misses += 1
+            display.show(DROPPED)
+            if misses > MAX_MISSES:
+                state = "GAMEOVER"
+            else:
+                state = "NEWDROP"
             
         elif state == "CATCH":
-            ## add one to drops in cup
-            ## if cup is at capacity
-            #    ## add one to score
-            #    state = "FULL"
-            ## else if over capacity
-            #    state = "OVERFLOW"
-            ## else
-            #    ## add one to score
-            #    state = "NEWDROP"
-            pass
+            drops_in_cup += 1
+            dsiplay.show(FULL)
+            if drops_in_cup == CUP_CAPACITY:
+                state = "FULL"
+                score += 1
+            elif drops_in_cup > CUP_CAPACITY:
+                state = "OVERFLOW"
+            else:
+                score += 1
+                state = "NEWDROP"
             
         elif state == "FULL":
-            ## show animation FULL??
-            #    state = "NEWDROP"
-            pass
+            display.show(CAUGHT)
+            state = "NEWDROP"
             
         elif state == "EMPTYING":
-            # show animation: draining     DRAINING
-            ## zero drops in cup
-            ## if speed > 1
-            #    ## take one off of speed
-            #state = "NEWDROP"
-            pass
+            display.show(DRAINING)
+            drops_in_cup = 0
+            if speed > 1:
+                speed -= 1
+            state = "NEWDROP"
             
         elif state == "OVERFLOW":
-            ## show animation: overflowing    OVERFLOW
-            #state = "GAMEOVER"
-            pass
+            display.show(OVERFLOW)
+            state = "GAMEOVER"
             
         elif state == "GAMEOVER":
-            ## show animation: float to heaven    HEAVEN
-            #break
-            pass
+            display.show(HEAVEN)
+            break # end of game
             
     return score
         
