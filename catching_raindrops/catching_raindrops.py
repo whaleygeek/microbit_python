@@ -3,21 +3,54 @@
 from microbit import *
 import math
 
-# game parameters
-
+# Game parameters
 CUP_CAPACITY = 5
 SPEED = 6
 MAX_MISSES = 3
 AUTO_EMPTY = False
 SENSITIVITY = 400
 
-SPLASH = [Image('00000:00000:00000:09090:09990:'),Image('00000:09090:00000:09090:09990:')]
+# Images
+BLANK      = Image('00000:00000:00000:00000:00000')
+BLINK      = Image('00000:09090:00000:00000:00000')
+CUP        = Image('00000:00000:00000:09090:09990')
+CUP_FULL   = Image('00000:00000:00000:09990:09990')
+CUP_BLINK  = Image('00000:09090:00000:09090:09990')
 
-EMPTY = Image('00000:00000:00000:00000:00000:')
-CUP   = Image('00000:00000:00000:09090:09990:')
+CUP_CATCH1 = Image('00000:00000:00000:09990:09990')
+CUP_CATCH2 = Image('00000:00000:00000:90909:99999')
 
-CUP_CANVAS = [EMPTY, CUP, EMPTY]
+CUP_JUMP1  = Image('00000:09090:09990:00000:00900')
+CUP_JUMP2  = Image('00000:00000:09090:09990:00000')
 
+CUP_DRAIN1 = Image('00000:00000:00900:09090:09990')
+CUP_DRAIN2 = Image('00000:00900:00000:09090:09990')
+CUP_DRAIN3 = Image('00900:00000:00000:09090:09990')
+
+CUP_OVER1  = Image('00000:00000:09990:09990:09990')
+CUP_OVER2  = Image('00000:00000:09090:99999:09990')
+CUP_OVER3  = Image('00000:00000:00000:99999:09990')
+CUP_OVER4  = Image('00000:00000:00000:09990:99999')
+
+CUP_FLOAT1 = Image('00000:00000:00000:00000:99999')
+CUP_FLOAT2 = Image('00000:00000:00000:09990:09090')
+CUP_FLOAT3 = Image('00000:00000:00000:99999:00000')
+CUP_FLOAT4 = Image('00000:00000:09990:09090:00000')
+CUP_FLOAT5 = Image('00000:00000:99999:00000:00000')
+CUP_FLOAT6 = Image('00000:09990:09090:00000:00000')
+CUP_FLOAT7 = Image('00000:99999:00000:00000:00000')
+CUP_FLOAT8 = Image('09990:09090:00000:00000:00000')
+CUP_FLOAT9 = Image('99999:00000:00000:00000:00000')
+
+# Animations
+SPLASH     = [CUP, CUP_BLINK]
+CUP_CANVAS = [BLANK, CUP, BLANK]
+DROPPED    = [CUP, CUP_JUMP1, CUP_JUMP2, CUP]
+CAUGHT     = [CUP_CATCH1, CUP_CATCH2, CUP]
+DRAINING   = [CUP_FULL, CUP_DRAIN1, CUP_DRAIN2, CUP_DRAIN3, CUP]
+OVERFLOW   = [CUP_FULL, CUP_OVER1, CUP_OVER2, CUP_OVER3, CUP_OVER4, CUP_FULL]
+HEAVEN     = [CUP, CUP_FLOAT1, CUP_FLOAT2, CUP_FLOAT3, CUP_FLOAT4, CUP_FLOAT5, CUP_FLOAT6, CUP_FLOAT7, CUP_FLOAT8, 
+              CUP_FLOAT9, BLANK, BLINK, BLANK]
 
 def show_splash_screen():
     button_a.reset_presses()
@@ -71,10 +104,10 @@ def play_game(): #TODO
             pass
             
         elif state == "RAINING":
-            ## draw cup
-            ## draw drop
+            ## draw cup CUP
+            ## draw drop plot
             ## if cup full:
-            #    ## draw full cup
+            #    ## draw full cup CUP_FULL
             ## if drop at cup
             #    state = "ATCUP"
             ## else
@@ -92,7 +125,7 @@ def play_game(): #TODO
             
         elif state == "MISS":
             ## add one to misses
-            ## show dropped animation
+            ## show dropped animation DROPPED
             ## if too many misses
             #    state = "GAMEOVER"
             ## else
@@ -112,18 +145,12 @@ def play_game(): #TODO
             pass
             
         elif state == "FULL":
-            ## show animation 
-            ## if AUTO EMPTY
-            #    state = "EMPTYING"
-            ## else
+            ## show animation FULL??
             #    state = "NEWDROP"
             pass
             
         elif state == "EMPTYING":
-            ## if cup inverted
-            #    ## show animation:draining
-            ## else
-            #    ## show animation: other?
+            # show animation: draining     DRAINING
             ## zero drops in cup
             ## if speed > 1
             #    ## take one off of speed
@@ -131,12 +158,12 @@ def play_game(): #TODO
             pass
             
         elif state == "OVERFLOW":
-            ## show animation: overflowing
+            ## show animation: overflowing    OVERFLOW
             #state = "GAMEOVER"
             pass
             
         elif state == "GAMEOVER":
-            ## show animation: float to heaven
+            ## show animation: float to heaven    HEAVEN
             #break
             pass
             
