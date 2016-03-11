@@ -11,6 +11,8 @@ MAX_MISSES = 3
 AUTO_EMPTY = False
 SENSITIVITY = 400
 
+speed = SPEED
+
 # Images
 BLANK      = Image('00000:00000:00000:00000:00000')
 BLINK      = Image('00000:09090:00000:00000:00000')
@@ -45,7 +47,6 @@ CUP_FLOAT9 = Image('99999:00000:00000:00000:00000')
 
 # Animations
 SPLASH     = [CUP, CUP_BLINK]
-CUP_CANVAS = [BLANK, CUP, BLANK]
 DROPPED    = [CUP, CUP_JUMP1, CUP_JUMP2, CUP]
 CAUGHT     = [CUP_CATCH1, CUP_CATCH2, CUP]
 DRAINING   = [CUP_FULL, CUP_DRAIN1, CUP_DRAIN2, CUP_DRAIN3, CUP]
@@ -90,6 +91,7 @@ def show_number(n):
     display.show(str(n))
        
 def play_game(): #TODO
+    global speed
     score = 0
     drops_in_cup = 0
     misses = 0
@@ -100,7 +102,7 @@ def play_game(): #TODO
     
     while True:
         if state == "NEWDROP":
-            ## create new drop at random position
+            # create new drop at random position
             drop_x = random.randrange(5)
             drop_y = 0
             state = "RAINING"
@@ -108,19 +110,20 @@ def play_game(): #TODO
         elif state == "RAINING":
             # show cup
             cup_x = get_cup_position()
-            #TODO: ### Not sure how to do this bit in python (display from a bigger canvas)
-            if drops_in_cup == cup_capacity: # cup full
+            img = CUP.shift_right(cup_x-2)
+            display.show(img)
+            if drops_in_cup == CUP_CAPACITY: # cup full
                 display.show(CUP_FULL)
             # draw drop plot
             display.set_pixel(drop_x, int(drop_y/speed), 9)
             sleep(100)
             if drop_y >= 4*speed:
                 state = "ATCUP"
-            else
+            else:
                 # move drop down
                 drop_y += 1
             #TODO ### have to sense cup_inverted from accelerometer? or use gesture.
-            if cup_inverted and drops_in_cup >= cup_capacity:
+            if cup_inverted and drops_in_cup >= CUP_CAPACITY:
                 state = "EMPTYING"
             
         elif state == "ATCUP":
