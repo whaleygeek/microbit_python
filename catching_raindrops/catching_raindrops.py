@@ -55,13 +55,8 @@ HEAVEN     = [CUP, CUP_FLOAT1, CUP_FLOAT2, CUP_FLOAT3, CUP_FLOAT4, CUP_FLOAT5, C
 
 def show_splash_screen():
     button_a.reset_presses()
-    button_b.reset_presses()
-    
-    while not button_a.was_pressed() and not button_b.was_pressed():
+    while not button_a.was_pressed():
         display.show(SPLASH, delay=250)
-
-    button_a.reset_presses()
-    button_b.reset_presses()
 
 def get_cup_position():
     acc = accelerometer.get_x()/SENSITIVITY
@@ -92,7 +87,7 @@ def play_game(): #TODO
     state = "NEWDROP"
     
     while True:
-        cup_inverted = False #TODO: read from accelerometer
+        cup_inverted = accelerometer.get_y() < -800
         
         if state == "NEWDROP":
             # create new drop at random position
@@ -145,7 +140,7 @@ def play_game(): #TODO
                 state = "NEWDROP"
             
         elif state == "FULL":
-            display.show(CAUGHT)
+            display.show(CUP_FULL)
             state = "NEWDROP"
             
         elif state == "EMPTYING":
@@ -170,13 +165,12 @@ def run(): #TO TEST
     
     while True:
         show_splash_screen()
-        
-        if button_a.was_pressed():
-            button_a.reset_presses()
-            score = play_game()
-            if score > high_score:
-                high_score = score
-                show_number(high_score)
+
+        score = play_game()
+        if score > high_score:
+            display.scroll("HIGH")
+            high_score = score
+        show_number(high_score)
 
 # run()
 
