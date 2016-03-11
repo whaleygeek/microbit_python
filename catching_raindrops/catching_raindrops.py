@@ -75,6 +75,7 @@ def show_number(n):
         sleep(500)
         
     display.show(str(n))
+    sleep(2000)
        
 def play_game(): #TODO
     global speed
@@ -172,7 +173,7 @@ def run(): #TO TEST
             high_score = score
         show_number(high_score)
 
-# run()
+run()
 
     
     
