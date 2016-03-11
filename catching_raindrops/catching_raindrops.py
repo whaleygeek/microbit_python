@@ -8,7 +8,6 @@ import random
 CUP_CAPACITY = 5
 SPEED = 6
 MAX_MISSES = 3
-AUTO_EMPTY = False
 SENSITIVITY = 400
 
 speed = SPEED
@@ -73,14 +72,6 @@ def get_cup_position():
         acc = 0
     return int(acc)
 
-def test_movement():
-    while not button_b.was_pressed():
-        x = get_cup_position()
-        display.clear()
-        display.set_pixel(x, 2, 9)
-        sleep(200)
-    button_b.reset_presses()
-    
 def show_number(n):
     for i in range(4):
         display.show(str(n))
@@ -101,6 +92,8 @@ def play_game(): #TODO
     state = "NEWDROP"
     
     while True:
+        cup_inverted = False #TODO: read from accelerometer
+        
         if state == "NEWDROP":
             # create new drop at random position
             drop_x = random.randrange(5)
@@ -122,7 +115,6 @@ def play_game(): #TODO
             else:
                 # move drop down
                 drop_y += 1
-            #TODO ### have to sense cup_inverted from accelerometer? or use gesture.
             if cup_inverted and drops_in_cup >= CUP_CAPACITY:
                 state = "EMPTYING"
             
@@ -142,7 +134,7 @@ def play_game(): #TODO
             
         elif state == "CATCH":
             drops_in_cup += 1
-            dsiplay.show(FULL)
+            display.show(CAUGHT)
             if drops_in_cup == CUP_CAPACITY:
                 state = "FULL"
                 score += 1
@@ -185,10 +177,6 @@ def run(): #TO TEST
             if score > high_score:
                 high_score = score
                 show_number(high_score)
-                
-        elif button_b.was_pressed():
-            button_b.reset_presses()
-            test_movement()
 
 # run()
 
