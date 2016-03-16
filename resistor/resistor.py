@@ -9,8 +9,8 @@ def draw_dots(n):
     
 def run(): 
     while True:
-        v = pin0.read_analog()
-        #v = accelerometer.get_x()
+        #v = pin0.read_analog()
+        v = accelerometer.get_x()
         #v = accelerometer.get_y()
         if v > 1023:
             v = 1023
@@ -18,6 +18,6 @@ def run():
         draw_dots(v)
         sleep(100)
 
-# run()
+run()
 
     
