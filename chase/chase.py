@@ -1,4 +1,4 @@
-# catch.py  25/04/2016  D.J.Whale
+# chase.py  25/04/2016  D.J.Whale
 
 from microbit import *
 import random
@@ -35,7 +35,7 @@ def play_chase():
         sleep(1000/SPEED)   
         time_lasted += 1
         
-    return int(time_lasted / SPEED/7)
+    return int(time_lasted/SPEED/7)
     
 def run():
     while True:
