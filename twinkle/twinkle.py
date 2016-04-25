@@ -2,7 +2,7 @@ from microbit import *
 from neopixel import *
 import random
 
-MAX = 30
+MAX = 60
 n = NeoPixel(pin0, 8)
 
 while True:
