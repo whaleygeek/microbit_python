@@ -59,8 +59,8 @@ def splash_screen():
         if button_a.was_pressed() or button_b.was_pressed():
             break
     display.clear()
-    button_a.reset_presses()
-    button_b.reset_presses()
+    #button_a.reset_presses()
+    #button_b.reset_presses()
     
 def move(player, col):
     """Move a piece along the top for this player"""
@@ -72,8 +72,8 @@ def move(player, col):
     # intensity is bright for player 1, dim for player 2
     # returns column selected (0..3)
 
-    button_a.reset_presses()
-    button_b.reset_presses()
+    #button_a.reset_presses()
+    #button_b.reset_presses()
     brightness = get_brightness(player)
     display.set_pixel(col, 0, brightness)
         
