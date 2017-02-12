@@ -1,4 +1,4 @@
-# crypt_radio.py - encrypt and decrypt messages over radio
+# cypher_radio.py - encrypt and decrypt messages over radio
 
 from microbit import *
 import radio
