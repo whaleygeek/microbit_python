@@ -38,9 +38,33 @@ class MIDI():
         self.send(self.NOTE_OFF|self.channel, note, velocity)
 
 midi = MIDI()
-while True:
-    for n in range(20, 90):
-        midi.note_on(n)
-        sleep(10)
-        midi.note_off(n)
-        sleep(10)
+
+def slide():
+    while True:
+        for n in range(20, 90):
+            midi.note_on(n)
+            sleep(10)
+            midi.note_off(n)
+            sleep(10)
+
+def acc():
+    min_n = 20 # 0
+    max_n = 90 # 127
+    prev_n = None
+    while True:
+        x = accelerometer.get_x()
+        x = min(x, 1000)
+        x = max(x, -1000)
+        x += 1000
+        n = min_n + x / (2000/(max_n-min_n))
+        n = int(n)
+        
+        if prev_n is None or prev_n != n:
+            if prev_n is not None:
+                midi.note_off(prev_n)
+             
+            midi.note_on(n)
+            prev_n = n
+        
+acc()
+
