@@ -66,5 +66,26 @@ def acc():
             midi.note_on(n)
             prev_n = n
         
-acc()
+NOTE_1 = 69
+NOTE_2 = 72
+note = 0
+while True:
+    if pin2.is_touched():
+       if note != 2:
+            midi.note_off(NOTE_1)
+            midi.note_on(NOTE_2)
+            note = 2
+            display.show('2')
+    elif pin1.is_touched():
+        if note != 1:
+            midi.note_off(NOTE_2)
+            midi.note_on(NOTE_1)
+            note=1
+            display.show('1')
+    elif note != 0:
+        midi.note_off(NOTE_1)
+        midi.note_off(NOTE_2)
+        note = 0
+        display.show('0')
+        
 
