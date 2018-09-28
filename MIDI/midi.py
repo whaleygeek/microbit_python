@@ -7,8 +7,8 @@ class MIDI():
     CHAN_BANK = 0x00
     CHAN_VOLUME = 0x07
     CHAN_PROGRAM = 0xC0
-
-    uart.init(baudrate=31250, bits=8, parity=None, stop=1, tx=pin0)
+    #31250 if using real MIDI link, 115200 for hairless MIDI
+    uart.init(baudrate=115200, bits=8, parity=None, stop=1)#, tx=pin0)
 
     @staticmethod
     def send(b0, b1, b2=None):
@@ -66,26 +66,39 @@ def acc():
             midi.note_on(n)
             prev_n = n
         
-NOTE_1 = 69
-NOTE_2 = 72
-note = 0
+NOTE_0 = 37
+NOTE_1 = 42
+NOTE_2 = 44
+
+note = -1
 while True:
     if pin2.is_touched():
        if note != 2:
+            midi.note_off(NOTE_0)
             midi.note_off(NOTE_1)
             midi.note_on(NOTE_2)
             note = 2
             display.show('2')
     elif pin1.is_touched():
         if note != 1:
+            midi.note_off(NOTE_0)
             midi.note_off(NOTE_2)
             midi.note_on(NOTE_1)
             note=1
             display.show('1')
-    elif note != 0:
+    elif pin0.is_touched():
+        if note != 0:
+            midi.note_off(NOTE_2)
+            midi.note_off(NOTE_1)
+            midi.note_on(NOTE_0)
+            note=0
+            display.show('0')
+            
+    elif note != -1:
+        midi.note_off(NOTE_0)
         midi.note_off(NOTE_1)
         midi.note_off(NOTE_2)
-        note = 0
-        display.show('0')
+        note = -1
+        display.show('-')
         
 
